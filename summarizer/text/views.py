@@ -1,7 +1,7 @@
 # views.py
 from django.shortcuts import render
 from django.http import HttpResponse
-from .text_models import summarize_text_bart, baseline_summarizer, summarize_text_t5, summarize_text_pegasus,calculate_bleu ,calculate_rouge_scores
+from .text_models import summarize_text_pegasus2,summarize_text_bart, baseline_summarizer, summarize_text_t5, summarize_text_pegasus,calculate_bleu ,calculate_rouge_scores
 from docx import Document
 import PyPDF2
 import os
@@ -36,6 +36,7 @@ def summarize(request):
         # Mapping of model names to functions
         model_functions = {
             'Baseline': baseline_summarizer,
+            'Pegasus2':summarize_text_pegasus2,
             'BART': summarize_text_bart,
             'T5': summarize_text_t5,
             'Pegasus': summarize_text_pegasus,

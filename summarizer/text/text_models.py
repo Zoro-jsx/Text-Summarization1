@@ -53,7 +53,18 @@ def summarize_text_t5(document):
     summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
 
     return summary
+def summarize_text_pegasus2(document):
+    # Load pre-trained model and tokenizer
+    model = PegasusForConditionalGeneration.from_pretrained("google/pegasus-large")
+    tokenizer = PegasusTokenizer.from_pretrained("google/pegasus-large")
 
+    # Generate summary
+    inputs = tokenizer([document], return_tensors="pt", truncation=True)
+    max_length = int(len(tokenizer.encode(document)) * 0.5)
+    outputs = model.generate(inputs["input_ids"], max_length=max_length, length_penalty=2.0, num_beams=4, early_stopping=True)
+    summary = tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+    return summary
 def summarize_text_pegasus(document):
     # Load pre-trained model and tokenizer
     model = PegasusForConditionalGeneration.from_pretrained("google/pegasus-large")
